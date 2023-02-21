@@ -16,7 +16,6 @@ protocol WeatherManagerDelegate {
     
     struct WeatherManager {
         let weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=ebfac4bfd2e624b1b3241e800a8f45c3&units=metric"
-        //"https://api.openweathermap.org/data/2.5/weather?appid=ebfac4bfd2e624b1b3241e800a8f45c3&&units=metric"
         
         var delegate: WeatherManagerDelegate?
         
@@ -30,15 +29,12 @@ protocol WeatherManagerDelegate {
             performRequest(urlString: urlString)
         }
         
-        
         func performRequest(urlString: String) {
             // 1. Create URL
-            if let url = URL(string: urlString) {
-                
-                // 2. Create a URLSession
+                if let url = URL(string: urlString) {
+            // 2. Create a URLSession
                 let session = URLSession(configuration: .default)
-                // 3. Give the session a task
-                //let tast = session.dataTask(with: url, completionHandler: handle(data: response: error:))
+            // 3. Give the session a task
                 let task = session.dataTask(with: url) { (data, response, error) in
                     if error != nil {
                         self.delegate?.didFailWithError(error: error!)
@@ -51,22 +47,10 @@ protocol WeatherManagerDelegate {
                         }
                     }
                 }
-                // 4. Start the task
+            // 4. Start the task
                 task.resume()
             }
         }
-        
-        //    func handle(data: Data?, response: URLResponse?, error: Error?) {
-        //        if error != nil {
-        //            print(error!)
-        //            return
-        //        }
-        //
-        //        if let safeData = data {
-        //            let dataString = String(data: safeData, encoding: .utf8)
-        //            print(dataString!)
-        //        }
-        //    }
         
         func parseJSON(_ weatherData: Data) -> WeatherModel? {
             let decoder = JSONDecoder()
@@ -80,7 +64,6 @@ protocol WeatherManagerDelegate {
                 
                 let weather = WeatherModel(conditionId: id, cityName: name, tempetarure: temp)
                 return weather
-                
             } catch {
                 delegate?.didFailWithError(error: error)
                 return nil
